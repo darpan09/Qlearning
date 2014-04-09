@@ -1,0 +1,271 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package software.agents;
+import java.text.DecimalFormat;
+import java.util.Random;
+ 
+/**
+ * @author Kunuk Nykjaer
+ */
+public class SoftwareAgents {
+    final DecimalFormat df = new DecimalFormat("#.##");
+ 
+    // path finding
+    final double alpha = 0.1;
+    final double gamma = 0.9;
+ 
+ 
+// states A,B,C,D,E,F
+// e.g. from A we can go to B or D
+// from C we can only go to C 
+// C is goal state, reward 100 when B->C or F->C
+// 
+// _______
+// |A|B|C|
+// |_____|
+// |D|E|F|
+// |_____|
+//
+ 
+    //First Row
+    final int state1 = 0, state2 = 1, state3 = 2, state4 = 3, state5 = 4, state6 = 5,state7 = 6;
+    //Second Row
+    final int state8 = 7, state9 = 8,state10 = 9, state11 = 10, state12 = 11, state13 = 12, state14 = 13;
+    //Third Row
+    final int state15 = 14, state16 = 15, state17 = 16, state18 = 17, state19 = 18, state20 = 19, state21 = 20;
+    //Fourth Row
+    final int state22 = 21, state23 = 22, state24 = 23, state25 = 24, state26 = 25, state27 = 26, state28 = 27;
+    //Fifth Row
+    final int state29 = 28, state30 = 29, state31 = 30, state32 = 31, state33 = 32, state34 = 33, state35 = 34;
+    //Sixth Row
+    final int state36 = 35, state37 = 36, state38 = 37, state39 = 38, state40 = 39, state41 = 40, state42 = 41;
+    //Seventh Row
+    final int state43 = 42, state44 = 43, state45 = 44, state46 = 45, state47 = 46, state48 = 47, state49 = 48;
+    
+    final int statesCount = 49;
+    final int[] states = new int[]{state1,state2,state3,state4,state5,state6, state7,
+                                    state8,state9,state10,state11,state12,state13, state14,
+                                    state15,state16,state17,state18,state19,state20, state21,
+                                    state22,state23,state24,state25,state26,state27, state28,
+                                    state29,state30,state31,state32,state33,state34, state35,
+                                    state36,state37,state38,state39,state40,state41, state42,
+                                    state43,state44,state45,state46,state47,state48, state49};
+ 
+    // http://en.wikipedia.org/wiki/Q-learning
+    // http://people.revoledu.com/kardi/tutorial/ReinforcementLearning/Q-Learning.htm
+ 
+    // Q(s,a)= Q(s,a) + alpha * (R(s,a) + gamma * Max(next state, all actions) - Q(s,a))
+ 
+    int[][] R = new int[statesCount][statesCount]; // reward lookup
+    double[][] Q = new double[statesCount][statesCount]; // Q learning
+ 
+    //First Row Movements
+    int[] actionsFrom1 = new int[] { state2, state8 };
+    int[] actionsFrom2 = new int[] { state1, state3, state9 };
+    int[] actionsFrom3 = new int[] { state2, state4, state10 };
+    int[] actionsFrom4 = new int[] { state3, state5, state11 };
+    int[] actionsFrom5 = new int[] { state4, state6, state12 };
+    int[] actionsFrom6 = new int[] { state5, state7, state13 };
+    int[] actionsFrom7 = new int[] { state6, state14 };
+    
+    //Second Row Movements
+    int[] actionsFrom8 = new int[] { state1, state9, state15 };
+    int[] actionsFrom9 = new int[] { state2, state8, state10, state16 };
+    int[] actionsFrom10 = new int[] { state3, state9, state11, state17 };
+    int[] actionsFrom11 = new int[] { state4, state10, state12, state18 };
+    int[] actionsFrom12 = new int[] { state5, state11, state13, state19 };
+    int[] actionsFrom13 = new int[] { state6, state12, state14, state20 };
+    int[] actionsFrom14 = new int[] { state7, state13, state21 };
+    
+    //Third Row Movements
+    int[] actionsFrom15 = new int[] { state8, state16, state22 };
+    int[] actionsFrom16 = new int[] { state9, state15, state17, state23 };
+    int[] actionsFrom17 = new int[] { state10, state16, state18, state24 };
+    int[] actionsFrom18 = new int[] { state11, state17, state19, state25 };
+    int[] actionsFrom19 = new int[] { state12, state18, state20, state26 };
+    int[] actionsFrom20 = new int[] { state13, state19, state21, state27 };
+    int[] actionsFrom21 = new int[] { state14, state20, state28 };
+    
+    //Fourth Row Movements
+    int[] actionsFrom22 = new int[] { state15, state23, state29 };
+    int[] actionsFrom23 = new int[] { state16, state22, state24, state30 };
+    int[] actionsFrom24 = new int[] { state10, state23, state25, state31 };
+    int[] actionsFrom25 = new int[] { state11, state24, state26, state32 };
+    int[] actionsFrom26 = new int[] { state12, state25, state27, state33 };
+    int[] actionsFrom27 = new int[] { state13, state26, state28, state34 };
+    int[] actionsFrom28 = new int[] { state14, state27, state35 };
+    
+    //Fifth Row Movements
+    int[] actionsFrom29 = new int[] { state22, state30, state36 };
+    int[] actionsFrom30 = new int[] { state23, state29, state31, state37 };
+    int[] actionsFrom31 = new int[] { state24, state30, state32, state38 };
+    int[] actionsFrom32 = new int[] { state25, state31, state33, state39 };
+    int[] actionsFrom33 = new int[] { state26, state32, state34, state40 };
+    int[] actionsFrom34 = new int[] { state27, state33, state35, state41 };
+    int[] actionsFrom35 = new int[] { state28, state34, state42 };
+    
+    //Sixth Row Movements
+    int[] actionsFrom36 = new int[] { state29, state37, state43 };
+    int[] actionsFrom37 = new int[] { state30, state36, state38, state44 };
+    int[] actionsFrom38 = new int[] { state31, state37, state39, state45 };
+    int[] actionsFrom39 = new int[] { state32, state38, state40, state46 };
+    int[] actionsFrom40 = new int[] { state33, state39, state41, state47 };
+    int[] actionsFrom41 = new int[] { state34, state40, state42, state48 };
+    int[] actionsFrom42 = new int[] { state35, state41, state49 };
+    
+    //Seventh Row Movements
+    int[] actionsFrom43 = new int[] { state36, state44 };
+    int[] actionsFrom44 = new int[] { state37, state43, state45 };
+    int[] actionsFrom45 = new int[] { state38, state44, state46 };
+    int[] actionsFrom46 = new int[] { state39, state45, state47 };
+    int[] actionsFrom47 = new int[] { state40, state46, state48 };
+    int[] actionsFrom48 = new int[] { state41, state47, state49 };
+    int[] actionsFrom49 = new int[] { state42, state48 };
+    
+    int[][] actions = new int[][] { actionsFrom1, actionsFrom2, actionsFrom3, actionsFrom4, actionsFrom5, actionsFrom6, actionsFrom7,
+                                    actionsFrom8, actionsFrom9, actionsFrom10, actionsFrom11, actionsFrom12, actionsFrom13, actionsFrom14,
+                                    actionsFrom15, actionsFrom16, actionsFrom17, actionsFrom18, actionsFrom19, actionsFrom20, actionsFrom21,
+                                    actionsFrom22, actionsFrom23, actionsFrom24, actionsFrom25, actionsFrom26, actionsFrom27, actionsFrom28,
+                                    actionsFrom29, actionsFrom30, actionsFrom31, actionsFrom32, actionsFrom33, actionsFrom34, actionsFrom35,
+                                    actionsFrom36, actionsFrom37, actionsFrom38, actionsFrom39, actionsFrom40, actionsFrom41, actionsFrom42,
+                                    actionsFrom43, actionsFrom44, actionsFrom45, actionsFrom46, actionsFrom47, actionsFrom48, actionsFrom49};
+ 
+    String[] stateNames = new String[] { "1", "2", "3", "4", "5", "6", "7",
+                                            "8", "9", "10", "11", "12", "13", "14",
+                                            "15", "16", "17", "18", "19", "20", "21",
+                                            "22", "23", "24", "25", "26", "27", "28",
+                                            "29", "30", "31", "32", "33", "34", "35",
+                                            "36", "37", "38", "39", "40", "41", "42",
+                                            "43", "44", "45", "46", "47", "48", "49"};
+ 
+    public SoftwareAgents() {
+        init();
+    }
+ 
+    public void init() {        
+        R[state23][state22] = 500; // from b to c
+        R[state29][state22] = 100; // from f to c     
+    }
+ 
+    public static void main(String[] args) {
+        long BEGIN = System.currentTimeMillis();
+ 
+        SoftwareAgents obj = new SoftwareAgents();
+ 
+        obj.run();
+        obj.printResult();
+        obj.showPolicy();
+ 
+        long END = System.currentTimeMillis();
+        System.out.println("Time: " + (END - BEGIN) / 1000.0 + " sec.");
+    }
+ 
+    void run() {
+        /*
+         1. Set parameter , and environment reward matrix R 
+         2. Initialize matrix Q as zero matrix 
+         3. For each episode: Select random initial state 
+            Do while not reach goal state o 
+                Select one among all possible actions for the current state o 
+                Using this possible action, consider to go to the next state o 
+                Get maximum Q value of this next state based on all possible actions o 
+                Compute o Set the next state as the current state
+         */
+ 
+        // For each episode
+        Random rand = new Random();
+        for (int i = 0; i < 1000; i++) { // train episodes
+            // Select random initial state
+            int state = rand.nextInt(statesCount);
+            while (state != state22) // goal state
+            {
+                // Select one among all possible actions for the current state
+                int[] actionsFromState = actions[state];
+                 
+                // Selection strategy is random in this example
+                int index = rand.nextInt(actionsFromState.length);
+                int action = actionsFromState[index];
+ 
+                // Action outcome is set to deterministic in this example
+                // Transition probability is 1
+                int nextState = action; // data structure
+ 
+                // Using this possible action, consider to go to the next state
+                double q = Q(state, action);
+                double maxQ = maxQ(nextState);
+                int r = R(state, action);
+ 
+                double value = q + alpha * (r + gamma * maxQ - q);
+                setQ(state, action, value);
+ 
+                // Set the next state as the current state
+                state = nextState;
+            }
+        }
+    }
+ 
+    double maxQ(int s) {
+        int[] actionsFromState = actions[s];
+        double maxValue = Double.MIN_VALUE;
+        for (int i = 0; i < actionsFromState.length; i++) {
+            int nextState = actionsFromState[i];
+            double value = Q[s][nextState];
+ 
+            if (value > maxValue)
+                maxValue = value;
+        }
+        return maxValue;
+    }
+ 
+    // get policy from state
+    int policy(int state) {
+        int[] actionsFromState = actions[state];
+        double maxValue = Double.MIN_VALUE;
+        int policyGotoState = state; // default goto self if not found
+        for (int i = 0; i < actionsFromState.length; i++) {
+            int nextState = actionsFromState[i];
+            double value = Q[state][nextState];
+ 
+            if (value > maxValue) {
+                maxValue = value;
+                policyGotoState = nextState;
+            }
+        }
+        return policyGotoState;
+    }
+ 
+    double Q(int s, int a) {
+        return Q[s][a];
+    }
+ 
+    void setQ(int s, int a, double value) {
+        Q[s][a] = value;
+    }
+ 
+    int R(int s, int a) {
+        return R[s][a];
+    }
+ 
+    void printResult() {
+        System.out.println("Print result");
+        for (int i = 0; i < Q.length; i++) {
+            System.out.print("out from " + stateNames[i] + ":  ");
+            for (int j = 0; j < Q[i].length; j++) {
+                System.out.print(df.format(Q[i][j]) + " ");
+            }
+            System.out.println();
+        }
+    }
+ 
+    // policy is maxQ(states)
+    void showPolicy() {
+        System.out.println("\nshowPolicy");
+        for (int i = 0; i < states.length; i++) {
+            int from = states[i];
+            int to =  policy(from);
+            System.out.println("from "+stateNames[from]+" goto "+stateNames[to]);
+        }           
+    }
+}
