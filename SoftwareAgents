@@ -277,13 +277,13 @@ public class SoftwareAgents {
  
     void printResult() {
         System.out.println("Print results");
-        System.out.println("R(1,2) " + R(1,2));
+        System.out.println("R(0,1) " + R(0,1));
         for (int i = 0; i < Q.length; i++) {
             System.out.print("out from " + stateNames[i] + ":  ");
             for (int j = 0; j < Q[i].length; j++) {
                 System.out.print(df.format(Q[i][j]) + " ");
             }
-            System.out.println("R(1,2) " + R(1,2));
+            System.out.println("R(1,2) " + R(0,1));
         }
     }
  
@@ -294,6 +294,6 @@ public class SoftwareAgents {
             int from = states[i];
             int to =  policy(from);
             System.out.println("from "+stateNames[from]+" goto "+stateNames[to]);
-        }           
+        }        
     }
 }
