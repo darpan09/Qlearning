@@ -145,35 +145,113 @@ public class SoftwareAgents {
     }
  
     public void init() {
+        int w = -250;
         //Goal state
         R[state23][state22] = 500; // from 23 to 22
         R[state29][state22] = 500; // from 29 to 22
         R[state22][state22] = 500;
         //Walls
-        R[state1][state2] = -25;
-        R[state2][state1] = -25;
+        R[state1][state2] = w;
+        R[state2][state1] = w;
         
-        R[state5][state6] = -25;
-        R[state6][state5] = -25;
+        R[state5][state6] = w;
+        R[state6][state5] = w;
         
-        R[state3][state10] = -25;
-        R[state10][state3] = -25;
+        R[state3][state10] = w;
+        R[state10][state3] = w;
         
-        R[state4][state11] = -25;
-        R[state11][state4] = -25;
+        R[state4][state11] = w;
+        R[state11][state4] = w;
         
-        R[state8][state9] = -25;
-        R[state9][state8] = -25;
+        R[state8][state9] = w;
+        R[state9][state8] = w;
         
-        R[state9][state10] = -25;
-        R[state10][state9] = -25;
+        R[state9][state10] = w;
+        R[state10][state9] = w;
         
-        R[state12][state13] = -25;
-        R[state13][state12] = -25;
+        R[state12][state13] = w;
+        R[state13][state12] = w;
         
-        R[state13][state14] = -25;
-        R[state14][state13] = -25;
+        R[state13][state14] = w;
+        R[state14][state13] = w;
         
+        R[state11][state18] = w;
+        R[state18][state11] = w;
+        
+        R[state12][state19] = w;
+        R[state19][state12] = w;
+        
+        R[state13][state20] = w;
+        R[state20][state13] = w;
+        
+        R[state16][state17] = w;
+        R[state17][state16] = w;
+        
+        R[state17][state18] = w;
+        R[state18][state17] = w;
+        
+        R[state15][state22] = w;
+        R[state22][state15] = w;
+        
+        R[state16][state23] = w;
+        R[state23][state16] = w;
+        
+        R[state19][state26] = w;
+        R[state26][state19] = w;
+        
+        R[state20][state27] = w;
+        R[state26][state20] = w;
+        
+        R[state23][state24] = w;
+        R[state24][state23] = w;
+        
+        R[state24][state25] = w;
+        R[state25][state24] = w;
+        
+        R[state25][state24] = w;
+        R[state24][state25] = w;
+        
+        R[state27][state34] = w;
+        R[state34][state27] = w;
+        
+        R[state28][state35] = w;
+        R[state35][state28] = w;
+        
+        R[state29][state30] = w;
+        R[state30][state29] = w;
+        
+        R[state30][state31] = w;
+        R[state31][state30] = w;
+        
+        R[state32][state33] = w;
+        R[state33][state32] = w;
+        
+        R[state31][state38] = w;
+        R[state38][state31] = w;
+        
+        R[state32][state39] = w;
+        R[state39][state32] = w;
+        
+        R[state36][state37] = w;
+        R[state37][state36] = w;
+        
+        R[state37][state38] = w;
+        R[state38][state37] = w;
+        
+        R[state40][state41] = w;
+        R[state41][state40] = w;
+        
+        R[state41][state42] = w;
+        R[state42][state41] = w;
+        
+        R[state39][state46] = w;
+        R[state46][state39] = w;
+        
+        R[state40][state47] = w;
+        R[state47][state40] = w;
+        
+        R[state42][state43] = w;
+        R[state43][state42] = w;
     }
  
     public static void main(String[] args) {
