@@ -91,11 +91,11 @@ public class SoftwareAgents {
     //Fourth Row Movements
     int[] actionsFrom22 = new int[] { state15, state23, state29 };
     int[] actionsFrom23 = new int[] { state16, state22, state24, state30 };
-    int[] actionsFrom24 = new int[] { state10, state23, state25, state31 };
-    int[] actionsFrom25 = new int[] { state11, state24, state26, state32 };
-    int[] actionsFrom26 = new int[] { state12, state25, state27, state33 };
-    int[] actionsFrom27 = new int[] { state13, state26, state28, state34 };
-    int[] actionsFrom28 = new int[] { state14, state27, state35 };
+    int[] actionsFrom24 = new int[] { state17, state23, state25, state31 };
+    int[] actionsFrom25 = new int[] { state18, state24, state26, state32 };
+    int[] actionsFrom26 = new int[] { state19, state25, state27, state33 };
+    int[] actionsFrom27 = new int[] { state20, state26, state28, state34 };
+    int[] actionsFrom28 = new int[] { state21, state27, state35 };
     
     //Fifth Row Movements
     int[] actionsFrom29 = new int[] { state22, state30, state36 };
@@ -145,7 +145,7 @@ public class SoftwareAgents {
     }
  
     public void init() {
-        int w = -250;
+        int w = -500;
         //Goal state
         R[state23][state22] = 500; // from 23 to 22
         R[state29][state22] = 500; // from 29 to 22
@@ -193,14 +193,14 @@ public class SoftwareAgents {
         R[state15][state22] = w;
         R[state22][state15] = w;
         
-        R[state16][state23] = w;
+        R[state16][state23] = w; 
         R[state23][state16] = w;
         
         R[state19][state26] = w;
         R[state26][state19] = w;
         
         R[state20][state27] = w;
-        R[state26][state20] = w;
+        R[state27][state20] = w;
         
         R[state23][state24] = w;
         R[state24][state23] = w;
@@ -208,8 +208,8 @@ public class SoftwareAgents {
         R[state24][state25] = w;
         R[state25][state24] = w;
         
-        R[state25][state24] = w;
-        R[state24][state25] = w;
+        R[state25][state26] = w;
+        R[state26][state25] = w;
         
         R[state27][state34] = w;
         R[state34][state27] = w;
@@ -250,8 +250,9 @@ public class SoftwareAgents {
         R[state40][state47] = w;
         R[state47][state40] = w;
         
-        R[state42][state43] = w;
-        R[state43][state42] = w;
+        R[state43][state44] = w;
+        R[state43][state43] = w;
+        
     }
  
     public static void main(String[] args) {
