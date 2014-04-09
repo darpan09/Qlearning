@@ -144,9 +144,36 @@ public class SoftwareAgents {
         init();
     }
  
-    public void init() {        
-        R[state23][state22] = 500; // from b to c
-        R[state29][state22] = 100; // from f to c     
+    public void init() {
+        //Goal state
+        R[state23][state22] = 500; // from 23 to 22
+        R[state29][state22] = 500; // from 29 to 22
+        R[state22][state22] = 500;
+        //Walls
+        R[state1][state2] = -25;
+        R[state2][state1] = -25;
+        
+        R[state5][state6] = -25;
+        R[state6][state5] = -25;
+        
+        R[state3][state10] = -25;
+        R[state10][state3] = -25;
+        
+        R[state4][state11] = -25;
+        R[state11][state4] = -25;
+        
+        R[state8][state9] = -25;
+        R[state9][state8] = -25;
+        
+        R[state9][state10] = -25;
+        R[state10][state9] = -25;
+        
+        R[state12][state13] = -25;
+        R[state13][state12] = -25;
+        
+        R[state13][state14] = -25;
+        R[state14][state13] = -25;
+        
     }
  
     public static void main(String[] args) {
@@ -249,13 +276,14 @@ public class SoftwareAgents {
     }
  
     void printResult() {
-        System.out.println("Print result");
+        System.out.println("Print results");
+        System.out.println("R(1,2) " + R(1,2));
         for (int i = 0; i < Q.length; i++) {
             System.out.print("out from " + stateNames[i] + ":  ");
             for (int j = 0; j < Q[i].length; j++) {
                 System.out.print(df.format(Q[i][j]) + " ");
             }
-            System.out.println();
+            System.out.println("R(1,2) " + R(1,2));
         }
     }
  
