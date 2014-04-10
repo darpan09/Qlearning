@@ -280,6 +280,8 @@ public class SoftwareAgents {
         obj.initialiseSquares();
         obj.getQs();
         obj.Test();
+        obj.findPath();
+        
  
         long END = System.currentTimeMillis();
         System.out.println("Time: " + (END - BEGIN) / 1000.0 + " sec.");
@@ -392,6 +394,47 @@ public class SoftwareAgents {
         }        
     }
     
+    public void shadeSquare(Square s, double d){
+        Color light = new java.awt.Color(153, 167, 106);
+        Color medium = new java.awt.Color(153, 204, 57);
+        Color heavy = new java.awt.Color(153, 246, 16);
+        if (d > 100 && d< 199.99){
+            s.setBackground(light);
+        }
+        if (200 < d && d< 299.999){
+            s.setBackground(medium);
+        }
+        if (d > 300){
+            s.setBackground(heavy);
+        }
+    }
+    
+    public void highlightNextSquare(Square s){
+        Square newSquare = null;
+        if(s.north>=100){
+            newSquare = squareList.get(s.state-7);
+            shadeSquare(newSquare, s.north);
+        }if(s.east>=100){
+            newSquare = squareList.get(s.state+1);
+            shadeSquare(newSquare, s.east);
+        }if(s.south>=100){
+            newSquare = squareList.get(s.state+7);
+            shadeSquare(newSquare, s.south);
+        }if(s.west>=100){
+            newSquare = squareList.get(s.state-1);
+            shadeSquare(newSquare, s.west);
+        }
+    }
+    
+    public void findPath(){
+        for (Square s : squareList){
+            highlightNextSquare(s);
+        }
+        //Set Final and initial state colours
+        squareList.get(21).setBackground(Color.RED);
+        squareList.get(32).setBackground(Color.CYAN);
+    }
+    
     void getQs() {
         System.out.println("Getting all qs");
         for (int i = 0; i < Q.length; i++) {
@@ -404,7 +447,6 @@ public class SoftwareAgents {
                         state.north = Q[i][j];
                         state.north = round(state.north, 2, BigDecimal.ROUND_HALF_UP);
                         state.getNorthLabel().setText(state.north + "");
-                        
                     }
                     if (i - j == -7){
                         state.south = Q[i][j];
