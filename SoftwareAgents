@@ -2,9 +2,22 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package software.agents;
+package sa;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
  
 /**
  * @author Kunuk Nykjaer
@@ -15,6 +28,7 @@ public class SoftwareAgents {
     // path finding
     final double alpha = 0.1;
     final double gamma = 0.9;
+    ArrayList<Square> squareList = new ArrayList<>();
  
  
 // states A,B,C,D,E,F
@@ -263,6 +277,9 @@ public class SoftwareAgents {
         obj.run();
         obj.printResult();
         obj.showPolicy();
+        obj.initialiseSquares();
+        obj.getQs();
+        obj.Test();
  
         long END = System.currentTimeMillis();
         System.out.println("Time: " + (END - BEGIN) / 1000.0 + " sec.");
@@ -356,7 +373,6 @@ public class SoftwareAgents {
  
     void printResult() {
         System.out.println("Print results");
-        System.out.println("R(0,1) " + R(0,1));
         for (int i = 0; i < Q.length; i++) {
             System.out.print("out from " + stateNames[i] + ":  ");
             for (int j = 0; j < Q[i].length; j++) {
@@ -374,5 +390,107 @@ public class SoftwareAgents {
             int to =  policy(from);
             System.out.println("from "+stateNames[from]+" goto "+stateNames[to]);
         }        
+    }
+    
+    void getQs() {
+        System.out.println("Getting all qs");
+        for (int i = 0; i < Q.length; i++) {
+            Square state = squareList.get(i);
+            System.out.print("out from " + stateNames[i] + ":  ");
+            for (int j = 0; j < Q[i].length; j++) {
+                System.out.print(df.format(Q[i][j]) + " ");
+                if(Q[i][j] != 0){
+                    if (i - j == 7){
+                        state.north = Q[i][j];
+                        state.north = round(state.north, 2, BigDecimal.ROUND_HALF_UP);
+                        state.getNorthLabel().setText(state.north + "");
+                        
+                    }
+                    if (i - j == -7){
+                        state.south = Q[i][j];
+                        state.south = round(state.south, 2, BigDecimal.ROUND_HALF_UP);
+                        state.getSouthLabel().setText(state.south + "");
+                    }
+                    if (i - j == 1){
+                        state.west = Q[i][j];
+                        state.west = round(state.west, 2, BigDecimal.ROUND_HALF_UP);
+                        state.getWestLabel().setText(state.west + "");
+                    }
+                    if (i - j == 1){
+                        state.east = Q[i][j];
+                        state.east = round(state.east, 2, BigDecimal.ROUND_HALF_UP);
+                        state.getEastLabel().setText(state.east + "");
+                    }
+                }
+            }
+        }
+    }
+    
+    public void initialiseSquares(){
+        int size = 7;
+        for (int i = 0; i < size*size; ++i) {
+            Square sq = new Square(i);
+            squareList.add(sq);
+        }
+        int edge = 6;
+        int wall = 3;
+        int nowall = 1;
+        //Walls                                                     t  l  b  r
+        squareList.get(0).setBorder(BorderFactory.createMatteBorder(edge, edge, nowall, wall, Color.BLACK));
+        squareList.get(1).setBorder(BorderFactory.createMatteBorder(edge, wall, nowall, nowall, Color.BLACK));
+        squareList.get(2).setBorder(BorderFactory.createMatteBorder(4, 0, 2, 0, Color.BLACK));
+        squareList.get(3).setBorder(BorderFactory.createMatteBorder(4, 0, 2, 0, Color.BLACK));
+        squareList.get(4).setBorder(BorderFactory.createMatteBorder(4, 0, 0, 2, Color.BLACK));
+        squareList.get(5).setBorder(BorderFactory.createMatteBorder(4, 2, 0, 0, Color.BLACK));
+        squareList.get(6).setBorder(BorderFactory.createMatteBorder(4, 0, 0, 4, Color.BLACK));
+        
+        squareList.get(7).setBorder(BorderFactory.createMatteBorder(0, 4, 0, 2, Color.BLACK));
+        squareList.get(8).setBorder(BorderFactory.createMatteBorder(0, 2, 0, 2, Color.BLACK));
+        squareList.get(9).setBorder(BorderFactory.createMatteBorder(2, 2, 0, 0, Color.BLACK));
+        squareList.get(10).setBorder(BorderFactory.createMatteBorder(2, 0, 2, 0, Color.BLACK));
+        squareList.get(11).setBorder(BorderFactory.createMatteBorder(0, 0, 2, 2, Color.BLACK));
+        squareList.get(12).setBorder(BorderFactory.createMatteBorder(0, 2, 2, 2, Color.BLACK));
+        squareList.get(13).setBorder(BorderFactory.createMatteBorder(0, 2, 0, 4, Color.BLACK));
+        
+        squareList.get(14).setBorder(BorderFactory.createMatteBorder(0, 4, 0, 2, Color.BLACK));
+        squareList.get(15).setBorder(BorderFactory.createMatteBorder(0, 2, 0, 2, Color.BLACK));
+        squareList.get(16).setBorder(BorderFactory.createMatteBorder(2, 2, 0, 0, Color.BLACK));
+        squareList.get(17).setBorder(BorderFactory.createMatteBorder(2, 0, 2, 0, Color.BLACK));
+        squareList.get(18).setBorder(BorderFactory.createMatteBorder(0, 0, 2, 2, Color.BLACK));
+        squareList.get(19).setBorder(BorderFactory.createMatteBorder(0, 2, 2, 2, Color.BLACK));
+        squareList.get(20).setBorder(BorderFactory.createMatteBorder(0, 2, 0, 4, Color.BLACK));
+    }
+    
+    public void Test() {   
+        JFrame frame =  new JFrame();
+        frame.setSize(700, 700);
+        int size = 7;
+
+        JPanel content = new JPanel(new GridLayout(size,size));
+
+        for (Square sq : squareList) {
+            content.add(sq);
+            if(sq.state <= 6){
+                sq.getNorthLabel().setVisible(false);
+            }
+            if(sq.state == 0 || sq.state % 7 == 0){
+                sq.getWestLabel().setVisible(false);
+            }
+            if(sq.state %7 == 6){
+                sq.getEastLabel().setVisible(false);
+            }
+            if(sq.state >= 42){
+                sq.getSouthLabel().setVisible(false);
+            }
+        }
+        frame.add(content);
+        frame.setVisible(true);
+    }
+    
+    public static double round(double unrounded, int precision, int roundingMode)
+    {
+        BigDecimal bd = new BigDecimal(unrounded);
+        BigDecimal rounded = bd.setScale(precision, roundingMode);
+        return rounded.doubleValue();
     }
 }
