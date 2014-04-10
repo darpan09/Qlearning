@@ -29,6 +29,9 @@ public class SoftwareAgents {
     final double alpha = 0.1;
     final double gamma = 0.9;
     ArrayList<Square> squareList = new ArrayList<>();
+    
+    int episodes = 100;
+    int[] stepCounter = new int[episodes];
  
  
 // states A,B,C,D,E,F
@@ -301,9 +304,10 @@ public class SoftwareAgents {
  
         // For each episode
         Random rand = new Random();
-        for (int i = 0; i < 1000; i++) { // train episodes
+        for (int i = 0; i < episodes; i++) { // train episodes
             // Select random initial state
             int state = state33;
+            int counter = 0;
             while (state != state22) // goal state
             {
                 // Select one among all possible actions for the current state
@@ -327,7 +331,9 @@ public class SoftwareAgents {
  
                 // Set the next state as the current state
                 state = nextState;
-            }
+                counter ++;
+                }
+            stepCounter[episodes] = counter;
         }
     }
  
