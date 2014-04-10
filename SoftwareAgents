@@ -31,7 +31,8 @@ public class SoftwareAgents {
     ArrayList<Square> squareList = new ArrayList<>();
     
     int episodes = 100;
-    int[] stepCounter = new int[episodes];
+    ArrayList<Integer> stepCounter = new ArrayList<>();
+    int[] sc = new int[episodes];
  
  
 // states A,B,C,D,E,F
@@ -284,7 +285,7 @@ public class SoftwareAgents {
         obj.getQs();
         obj.Test();
         obj.findPath();
-        
+        obj.printSteps();
  
         long END = System.currentTimeMillis();
         System.out.println("Time: " + (END - BEGIN) / 1000.0 + " sec.");
@@ -333,7 +334,14 @@ public class SoftwareAgents {
                 state = nextState;
                 counter ++;
                 }
-            stepCounter[episodes] = counter;
+             stepCounter.add(counter);
+             sc[i] = counter;
+        }
+    }
+    
+    public void printSteps(){
+        for(int i = 0; i <= episodes; i++){
+            System.out.println("Episode " + (i+1) + " took " + sc[i] + " steps");
         }
     }
  
@@ -442,10 +450,8 @@ public class SoftwareAgents {
     }
     
     void getQs() {
-        System.out.println("Getting all qs");
         for (int i = 0; i < Q.length; i++) {
             Square state = squareList.get(i);
-            System.out.print("out from " + stateNames[i] + ":  ");
             for (int j = 0; j < Q[i].length; j++) {
                 System.out.print(df.format(Q[i][j]) + " ");
                 if(Q[i][j] != 0){
