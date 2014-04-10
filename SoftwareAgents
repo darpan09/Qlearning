@@ -265,7 +265,7 @@ public class SoftwareAgents {
         R[state47][state40] = w;
         
         R[state43][state44] = w;
-        R[state43][state43] = w;
+        R[state44][state43] = w;
         
     }
  
@@ -301,7 +301,7 @@ public class SoftwareAgents {
         Random rand = new Random();
         for (int i = 0; i < 1000; i++) { // train episodes
             // Select random initial state
-            int state = rand.nextInt(statesCount);
+            int state = state33;
             while (state != state22) // goal state
             {
                 // Select one among all possible actions for the current state
@@ -416,7 +416,7 @@ public class SoftwareAgents {
                         state.west = round(state.west, 2, BigDecimal.ROUND_HALF_UP);
                         state.getWestLabel().setText(state.west + "");
                     }
-                    if (i - j == 1){
+                    if (i - j == -1){
                         state.east = Q[i][j];
                         state.east = round(state.east, 2, BigDecimal.ROUND_HALF_UP);
                         state.getEastLabel().setText(state.east + "");
@@ -491,6 +491,10 @@ public class SoftwareAgents {
         squareList.get(46).setBorder(BorderFactory.createMatteBorder(wall, nowall, edge, nowall, Color.BLACK));
         squareList.get(47).setBorder(BorderFactory.createMatteBorder(nowall, nowall, edge, nowall, Color.BLACK));
         squareList.get(48).setBorder(BorderFactory.createMatteBorder(nowall, nowall, edge, edge, Color.BLACK));
+        
+        //Set Final and initial state colours
+        squareList.get(21).setBackground(Color.RED);
+        squareList.get(32).setBackground(Color.CYAN);
     }
     
     public void Test() {   
