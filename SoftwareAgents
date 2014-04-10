@@ -467,6 +467,30 @@ public class SoftwareAgents {
         squareList.get(25).setBorder(BorderFactory.createMatteBorder(wall, wall, nowall, nowall, Color.BLACK));
         squareList.get(26).setBorder(BorderFactory.createMatteBorder(wall, nowall, wall, nowall, Color.BLACK));
         squareList.get(27).setBorder(BorderFactory.createMatteBorder(nowall, nowall, wall, edge, Color.BLACK));
+        
+        squareList.get(28).setBorder(BorderFactory.createMatteBorder(nowall, edge, nowall, wall, Color.BLACK));
+        squareList.get(29).setBorder(BorderFactory.createMatteBorder(nowall, wall, nowall, wall, Color.BLACK));
+        squareList.get(30).setBorder(BorderFactory.createMatteBorder(nowall, wall, wall, nowall, Color.BLACK));
+        squareList.get(31).setBorder(BorderFactory.createMatteBorder(nowall, nowall, wall, wall, Color.BLACK));
+        squareList.get(32).setBorder(BorderFactory.createMatteBorder(nowall, wall, nowall, nowall, Color.BLACK));
+        squareList.get(33).setBorder(BorderFactory.createMatteBorder(wall, nowall, nowall, nowall, Color.BLACK));
+        squareList.get(34).setBorder(BorderFactory.createMatteBorder(wall, nowall, nowall, edge, Color.BLACK));
+        
+        squareList.get(35).setBorder(BorderFactory.createMatteBorder(nowall, edge, nowall, wall, Color.BLACK));
+        squareList.get(36).setBorder(BorderFactory.createMatteBorder(nowall, wall, nowall, wall, Color.BLACK));
+        squareList.get(37).setBorder(BorderFactory.createMatteBorder(wall, wall, nowall, nowall, Color.BLACK));
+        squareList.get(38).setBorder(BorderFactory.createMatteBorder(wall, nowall, wall, nowall, Color.BLACK));
+        squareList.get(39).setBorder(BorderFactory.createMatteBorder(nowall, nowall, wall, wall, Color.BLACK));
+        squareList.get(40).setBorder(BorderFactory.createMatteBorder(nowall, wall, nowall, wall, Color.BLACK));
+        squareList.get(41).setBorder(BorderFactory.createMatteBorder(nowall, wall, nowall, edge, Color.BLACK));
+        
+        squareList.get(42).setBorder(BorderFactory.createMatteBorder(nowall, edge, edge, wall, Color.BLACK));
+        squareList.get(43).setBorder(BorderFactory.createMatteBorder(nowall, wall, edge, nowall, Color.BLACK));
+        squareList.get(44).setBorder(BorderFactory.createMatteBorder(nowall, nowall, edge, nowall, Color.BLACK));
+        squareList.get(45).setBorder(BorderFactory.createMatteBorder(wall, nowall, edge, nowall, Color.BLACK));
+        squareList.get(46).setBorder(BorderFactory.createMatteBorder(wall, nowall, edge, nowall, Color.BLACK));
+        squareList.get(47).setBorder(BorderFactory.createMatteBorder(nowall, nowall, edge, nowall, Color.BLACK));
+        squareList.get(48).setBorder(BorderFactory.createMatteBorder(nowall, nowall, edge, edge, Color.BLACK));
     }
     
     public void Test() {   
