@@ -1,49 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package software.agents;
-/* ===========================================================
- * JFreeChart : a free chart library for the Java(tm) platform
- * ===========================================================
- *
- * (C) Copyright 2000-2004, by Object Refinery Limited and Contributors.
- *
- * Project Info:  http://www.jfree.org/jfreechart/index.html
- *
- * This library is free software; you can redistribute it and/or modify it under the terms
- * of the GNU Lesser General Public License as published by the Free Software Foundation;
- * either version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with this
- * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
- *
- * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
- * in the United States and other countries.]
- *
- * -------------------
- * LineChartDemo6.java
- * -------------------
- * (C) Copyright 2004, by Object Refinery Limited and Contributors.
- *
- * Original Author:  David Gilbert (for Object Refinery Limited);
- * Contributor(s):   -;
- *
- * $Id: LineChartDemo6.java,v 1.5 2004/04/26 19:11:55 taqua Exp $
- *
- * Changes
- * -------
- * 27-Jan-2004 : Version 1 (DG);
- * 
- */
+
+package sa;
 
 import java.awt.Color;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -64,34 +22,33 @@ import org.jfree.ui.RefineryUtilities;
  */
 public class Graph extends ApplicationFrame {
 
-
+    private int a;
     /**
      * Creates a new demo.
      *
      * @param title  the frame title.
      */
-    public Graph(final String title) {
-
+    public Graph(final String title, int i) {
+        
         super(title);
-        //stateList = list;
-        final XYDataset dataset = createStepsDataset();
-        final JFreeChart chart = createChart(dataset);
-        final ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(1000, 540));
-        setContentPane(chartPanel);
-
+        a = i;
+        
+        //Create Chart
+        final XYDataset dataset1 = createStepsDataset();
+        final JFreeChart chart1 = createChart(dataset1);
+        final ChartPanel chartPanel1 = new ChartPanel(chart1);
+        chartPanel1.setPreferredSize(new java.awt.Dimension(1000, 540));
+        setContentPane(chartPanel1);
     }
 
-    
-    /**
-     * Creates a sample dataset.
-     * 
-     * @return a sample dataset.
-     */
     private XYDataset createStepsDataset() {
-        SoftwareAgents sa1 = new SoftwareAgents(0.5, 0.3, 1.0, 100, 500, -500);
-        SoftwareAgents sa2 = new SoftwareAgents(0.5, 0.6, 1.0, 100, 500, -500);
-        SoftwareAgents sa3 = new SoftwareAgents(0.5, 0.9, 1.0, 100, 500, -500);
+        final XYSeriesCollection dataset = new XYSeriesCollection();
+        
+        SoftwareAgents sa1 = new SoftwareAgents(0.5, 0.3, 0.9, 100, 500, -500);
+        SoftwareAgents sa2 = new SoftwareAgents(0.5, 0.6, 0.9, 100, 500, -500);
+        SoftwareAgents sa3 = new SoftwareAgents(0.5, 0.9, 0.9, 100, 500, -500);
+        
+        if (a == 0){
         int [] list1 = sa1.sc;
         int [] list2 = sa2.sc;
         int [] list3 = sa3.sc;
@@ -122,23 +79,52 @@ public class Graph extends ApplicationFrame {
             series3.add(state, steps);
             k++;
         }
-
-        final XYSeriesCollection dataset = new XYSeriesCollection();
+        
         dataset.addSeries(series1);
         dataset.addSeries(series2);
         dataset.addSeries(series3);
+        
+        }
+        else if (a==1){
+        double [] list1 = sa1.vc;
+        double [] list2 = sa2.vc;
+        double [] list3 = sa3.vc;
+        
+        final XYSeries series1 = new XYSeries("Gamma 0.3");
+        int i = 0;
+        while (i < list1.length){
+            double state = i;
+            double steps = list1[i];
+            series1.add(state, steps);
+            i++;
+        }
+        
+        final XYSeries series2 = new XYSeries("Gamma 0.6");
+        int j = 0;
+        while (j < list2.length){
+            double state = j;
+            double steps = list2[j];
+            series2.add(state, steps);
+            j++;
+        }
+        
+        final XYSeries series3 = new XYSeries("Gamma 0.9");
+        int k = 0;
+        while (k < list3.length){
+            double state = k;
+            double steps = list3[k];
+            series3.add(state, steps);
+            k++;
+        }
+        
+        dataset.addSeries(series1);
+        dataset.addSeries(series2);
+        dataset.addSeries(series3);
+        }
                 
         return dataset;
-        
     }
-    
-    /**
-     * Creates a chart.
-     * 
-     * @param dataset  the data for the chart.
-     * 
-     * @return a chart.
-     */
+   
     private JFreeChart createChart(final XYDataset dataset) {
         
         // create the chart...
@@ -153,16 +139,10 @@ public class Graph extends ApplicationFrame {
             false                     // urls
         );
 
-        // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
         chart.setBackgroundPaint(Color.white);
 
-        //final StandardLegend legend = (StandardLegend) chart.getLegend();
-        //legend.setDisplaySeriesShapes(true);
-        
-        // get a reference to the plot for further customisation...
         final XYPlot plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.lightGray);
-        //plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
         
@@ -175,18 +155,21 @@ public class Graph extends ApplicationFrame {
         renderer.setSeriesShapesVisible(2, false);
         plot.setRenderer(renderer);
 
-        // change the auto tick unit selection to integer units only...
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        // OPTIONAL CUSTOMISATION COMPLETED.
                 
         return chart;
     }
     
     public static void main(String[] args) {
-        final Graph demo = new Graph("Graph");
+        final Graph demo = new Graph("Value Graph", 0);
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
+        
+        final Graph demo2 = new Graph("Value Graph", 1);
+        demo2.pack();
+        RefineryUtilities.centerFrameOnScreen(demo2);
+        demo2.setVisible(true);
     }
 }
