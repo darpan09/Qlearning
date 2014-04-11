@@ -109,7 +109,7 @@ public class Graph extends ApplicationFrame {
         int j = 0;
         while (j < list2.length){
             double state = j;
-            double steps = list1[j];
+            double steps = list2[j];
             series2.add(state, steps);
             j++;
         }
@@ -118,7 +118,7 @@ public class Graph extends ApplicationFrame {
         int k = 0;
         while (k < list3.length){
             double state = k;
-            double steps = list1[k];
+            double steps = list3[k];
             series3.add(state, steps);
             k++;
         }
