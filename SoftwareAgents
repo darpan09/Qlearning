@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sa;
+package software.agents;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -18,6 +18,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import org.jfree.ui.RefineryUtilities;
+import software.agents.Square;
  
 /**
  * @author Daniel Bell, Darpan Rai
@@ -26,13 +28,13 @@ public class SoftwareAgents {
     final DecimalFormat df = new DecimalFormat("#.##");
  
     // path finding
-    final double alpha = 0.1;
-    final double gamma = 0.9;
-    ArrayList<Square> squareList = new ArrayList<>();
+    final double alpha;
+    final double gamma;
+    final double eplison;
+    int episodes;
     
-    int episodes = 100;
-    ArrayList<Integer> stepCounter = new ArrayList<>();
-    int[] sc = new int[episodes];
+    ArrayList<Square> squareList = new ArrayList<>();
+    int[] sc;
  
  
 // states A,B,C,D,E,F
@@ -158,16 +160,36 @@ public class SoftwareAgents {
                                             "36", "37", "38", "39", "40", "41", "42",
                                             "43", "44", "45", "46", "47", "48", "49"};
  
-    public SoftwareAgents() {
-        init();
+    public SoftwareAgents(double a, double g, double epl, int ep, int reward, int wall) {
+        init(reward, wall);
+        alpha = a;
+        gamma = g;
+        eplison = epl;
+        episodes = ep;
+        sc = new int[episodes];
+        
+        long BEGIN = System.currentTimeMillis();
+        run();
+        printResult();
+        showPolicy();
+        initialiseSquares();
+        getQs();
+        Test();
+        findPath();
+        //createGraph();
+ 
+        long END = System.currentTimeMillis();
+        System.out.println("Time: " + (END - BEGIN) / 1000.0 + " sec.");
     }
  
-    public void init() {
-        int w = -500;
+    public void init(int re, int wa) {
+        int r = re;
+        int w = wa;
         //Goal state
-        R[state23][state22] = 500; // from 23 to 22
-        R[state29][state22] = 500; // from 29 to 22
-        R[state22][state22] = 500;
+        R[state23][state22] = r; 
+        R[state29][state22] = r; 
+        R[state22][state22] = r;
+        
         //Walls
         R[state1][state2] = w;
         R[state2][state1] = w;
@@ -274,21 +296,7 @@ public class SoftwareAgents {
     }
  
     public static void main(String[] args) {
-        long BEGIN = System.currentTimeMillis();
- 
-        SoftwareAgents obj = new SoftwareAgents();
- 
-        obj.run();
-        obj.printResult();
-        obj.showPolicy();
-        obj.initialiseSquares();
-        obj.getQs();
-        obj.Test();
-        obj.findPath();
-        obj.printSteps();
- 
-        long END = System.currentTimeMillis();
-        System.out.println("Time: " + (END - BEGIN) / 1000.0 + " sec.");
+        new SoftwareAgents(0.5, 0.9, 1, 100, 500, -500);
     }
  
     void run() {
@@ -304,7 +312,6 @@ public class SoftwareAgents {
          */
  
         // For each episode
-        Random rand = new Random();
         for (int i = 0; i < episodes; i++) { // train episodes
             // Select random initial state
             int state = state33;
@@ -312,12 +319,15 @@ public class SoftwareAgents {
             while (state != state22) // goal state
             {
                 // Select one among all possible actions for the current state
-                int[] actionsFromState = actions[state];
+                //int[] actionsFromState = actions[state];
                  
                 // Selection strategy is random in this example
-                int index = rand.nextInt(actionsFromState.length);
-                int action = actionsFromState[index];
- 
+                //int index = rand.nextInt(actionsFromState.length);
+                //int action = actionsFromState[index];
+                
+                //Use policy() to determine next selection
+                int action = policy(state);
+                
                 // Action outcome is set to deterministic in this example
                 // Transition probability is 1
                 int nextState = action; // data structure
@@ -333,16 +343,19 @@ public class SoftwareAgents {
                 // Set the next state as the current state
                 state = nextState;
                 counter ++;
+                if(i == 50){
+                    System.out.println(state);
                 }
-             stepCounter.add(counter);
+                }
              sc[i] = counter;
         }
     }
     
-    public void printSteps(){
-        for(int i = 0; i <= episodes; i++){
-            System.out.println("Episode " + (i+1) + " took " + sc[i] + " steps");
-        }
+    public void createGraph(){
+        final Graph demo = new Graph("Graph");
+        demo.pack();
+        RefineryUtilities.centerFrameOnScreen(demo);
+        demo.setVisible(true);
     }
  
     double maxQ(int s) {
@@ -362,7 +375,24 @@ public class SoftwareAgents {
     int policy(int state) {
         int[] actionsFromState = actions[state];
         double maxValue = Double.MIN_VALUE;
-        int policyGotoState = state; // default goto self if not found
+        
+        //Use eplison to select next state
+        Random rand = new Random();
+        int policyGotoState;
+        double b = rand.nextDouble();
+        if(b<=eplison){
+            int index = rand.nextInt(actionsFromState.length);
+            int action = actionsFromState[index];
+            policyGotoState = action;
+        } else {
+             //Random State Selection
+             actionsFromState = actions[state];
+             int index = rand.nextInt(actionsFromState.length);
+             int action = actionsFromState[index];
+             policyGotoState = action;
+        }
+        
+        //Select the next state
         for (int i = 0; i < actionsFromState.length; i++) {
             int nextState = actionsFromState[i];
             double value = Q[state][nextState];
